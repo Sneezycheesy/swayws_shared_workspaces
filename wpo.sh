@@ -11,6 +11,14 @@ VISIBLE_NEW=`awk -v var="$WORKSPACES_NEW" 'BEGIN{split(var, a);split(a[4], visib
 #FOCUSED_NEW=`echo $WORKSPACES_NEW | awk '{print $1}' | awk -F'=' '{print $2}'`
 FOCUSED_NEW=`awk -v var="$WORKSPACES_NEW" 'BEGIN{split(var, a);split(a[1], focused, "=");print focused[2]}'`
 
+echo "OUTPUT_CURRENT $OUTPUT_CURRENT"
+echo "WORKSPACES_CURRENT_NAME $WORKSPACE_CURRENT_NAME"
+
+echo "WORKSPACES_NEW $WORKSPACES_NEW"
+echo "OUTPUT_NEW $OUTPUT_NEW"
+echo "VISIBLE_NEW $VISIBLE_NEW"
+echo "FOCUSED_NEW $FOCUSED_NEW"
+
 if [[ "$2" = "move" ]]; then
     swaymsg move container workspace $1
     if [[ -z $3 ]]; then 
@@ -18,12 +26,24 @@ if [[ "$2" = "move" ]]; then
     fi
 fi
 
+if [[ "$WORKSPACES_NEW" = "" ]]; then
+    swaymsg workspace $1
+else
+   if [[ "$FOCUSED_NEW" != "true" ]]; then
+        if [[ "$VISIBLE_NEW" != "true" ]]; then
+	    swayws move "$1" "$OUTPUT_CURRENT" && swayws focus $1
+        else
+            swayws move "$WORKSPACE_CURRENT_NAME" "$OUTPUT_NEW" ; swayws move "$1" "$OUTPUT_CURRENT" ; wayws focus $1
+	fi
+   fi
+fi
+
 if [[ "$FOCUSED_NEW" != "true"  ]]; then
     if [[ "$VISIBLE_NEW" != "true" ]]; then
-	swayws move $1 $OUTPUT_CURRENT && swayws focus $1
+	swayws move "$1" "$OUTPUT_CURRENT" && swayws focus $1
     else
 	if [[ "" = "$WORKSPACES_NEW" ]]; then
-	    swayws focus "$1"
+	    swaymsg workspace $1
 	else
 	    swayws move "$WORKSPACE_CURRENT_NAME" "$OUTPUT_NEW" ; swayws move "$1" "$OUTPUT_CURRENT" ; swayws focus $1
 	fi
