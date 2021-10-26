@@ -11,13 +11,6 @@ VISIBLE_NEW=`awk -v var="$WORKSPACES_NEW" 'BEGIN{split(var, a);split(a[4], visib
 #FOCUSED_NEW=`echo $WORKSPACES_NEW | awk '{print $1}' | awk -F'=' '{print $2}'`
 FOCUSED_NEW=`awk -v var="$WORKSPACES_NEW" 'BEGIN{split(var, a);split(a[1], focused, "=");print focused[2]}'`
 
-echo "OUTPUT_CURRENT $OUTPUT_CURRENT"
-echo "WORKSPACES_CURRENT_NAME $WORKSPACE_CURRENT_NAME"
-
-echo "WORKSPACES_NEW $WORKSPACES_NEW"
-echo "OUTPUT_NEW $OUTPUT_NEW"
-echo "VISIBLE_NEW $VISIBLE_NEW"
-echo "FOCUSED_NEW $FOCUSED_NEW"
 
 if [[ "$2" = "move" ]]; then
     swaymsg move container workspace $1
