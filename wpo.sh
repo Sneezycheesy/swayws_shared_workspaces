@@ -26,7 +26,7 @@ else
         if [[ "$VISIBLE_NEW" != "true" ]]; then
 	    swayws move "$1" "$OUTPUT_CURRENT" && swayws focus $1
         else
-            swayws move "$WORKSPACE_CURRENT_NAME" "$OUTPUT_NEW" ; swayws move "$1" "$OUTPUT_CURRENT" ; wayws focus $1
+            swayws move "$WORKSPACE_CURRENT_NAME" "$OUTPUT_NEW" ; swayws move "$1" "$OUTPUT_CURRENT" ; swayws focus $1
 	fi
    fi
 fi
