@@ -27,12 +27,6 @@
 Make sure you have 
 <ul>
   <li><b>jq</b></li>
-  <li>
-    <a href="https://lib.rs/install/swayws">Swayws</a>
-    <ul>
-      <li>Depends on <a href="https://www.rust-lang.org/tools/install">Rust</a>
-    </ul>
-  </li>
 </ul>
 
 
