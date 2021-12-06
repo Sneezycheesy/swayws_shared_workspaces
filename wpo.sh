@@ -12,11 +12,23 @@ new_visible=$(echo "${new_workspace}" | awk '{split($0, a);split(a[4], visible, 
 new_focused=$(echo "${new_workspace}" | awk '{split($0, a);split(a[1], focused, "=");print focused[2]}')
 
 # If new desired workspace is already focused, just exit
-[ "$new_focused" = "false" ] || exit
+[[ "$new_focused" = "true" ]] && exit
+echo "After focused"
 
+# If new workspace exists but is not visible
+# And it's on another monitor
+# Focus it, move it and focus it again
+echo ${new_visible}
+echo ${current_output}
+echo ${new_output}
+[[ "${new_visible}" == "false" && "${current_output}" != "${new_output}" ]] && (swaymsg workspace "$1" ; swaymsg move workspace to output "${current_output}" ; swaymsg workspace "$1" ; exit)
+
+echo "Passed visible"
 # If current output and new output are the same
 # Or new workspace does not exist
 # Just switch workspaces and exit
-[[ "${current_output}" = "${new_output}" || -n "${new_workspace}" ]] && swaymsg workspace $1 ; exit
+[[ "${current_output}" == "${new_output}" || -z "${new_workspace}" ]] && (swaymsg workspace "$1" ; exit)
 
-swaymsg move workspace to output $new_output ; swaymsg workspace $1 ; swaymsg move workspace $current_output ; swaymsg workspace ${current_name} ; swaymsg workspace $1 ; exit
+# When both are visible
+# Swap outputs
+swaymsg move workspace to output "${new_output}" ; swaymsg workspace "$1" ; swaymsg move workspace to output "${current_output}" ; swaymsg workspace "$1" ; exit
